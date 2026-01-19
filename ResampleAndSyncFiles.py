@@ -102,70 +102,34 @@ if __name__ == "__main__":
         cname = os.path.basename(d.rstrip(os.sep))
         camnames.append(cname)
         
-    #     total_duration = 0
-    #     frames_info = []
+        total_duration = 0
+        frames_info = []
         
-    #     for vid_path in vids:
-    #         reader = imageio.get_reader(os.path.abspath(vid_path))
-    #         fps = reader.get_meta_data()['fps']
-    #         num_frames = count_frames_safe(
-    #             vid_path,
-    #             show_progress=True,
-    #             desc=f"Counting {os.path.basename(vid_path)}"
-    #         )
-    #         duration = num_frames / fps
-    #         total_duration += duration
-    #         frames_info.append({
-    #             'path': vid_path,
-    #             'fps': fps,
-    #             'num_frames': num_frames,
-    #             'duration': duration
-    #         })
-    #         reader.close()
+        for vid_path in vids:
+            reader = imageio.get_reader(os.path.abspath(vid_path))
+            fps = reader.get_meta_data()['fps']
+            num_frames = count_frames_safe(
+                vid_path,
+                show_progress=True,
+                desc=f"Counting {os.path.basename(vid_path)}"
+            )
+            duration = num_frames / fps
+            total_duration += duration
+            frames_info.append({
+                'path': vid_path,
+                'fps': fps,
+                'num_frames': num_frames,
+                'duration': duration
+            })
+            reader.close()
         
-    #     video_info[cname] = {
-    #         'total_duration': total_duration,
-    #         'frames_info': frames_info
-    #     }
-    #     durations.append(total_duration)
-    #     print(f"{cname}: {total_duration:.2f} seconds, {frames_info} frames, ({len(vids)} file(s))")
-    video_info = {
-        'Camera1 (00K70940408)': {
-            'total_duration': 1557.3426573426573,
-            'frames_info': [{'path': 'video/Camera1 (00K70940408)/Group-A-Mouse-198.avi',
-                 'fps': 20.02,
-                 'num_frames': int(31178),
-                 'duration': 1557.3426573426573}],
-        }, 
-        'Camera2 (00K83880156)': {
-            'total_duration': 1564.15,
-            'frames_info': [{'path': 'video/Camera2 (00K83880156)/Group-A-Mouse-198.avi',
-                 'fps': 20.0,
-                 'num_frames': int(31283),
-                 'duration': 1564.15}],
-        }, 
-        'Camera3 (00K84661627)': {
-            'total_duration': 1559.930139720559,
-            'frames_info': [{'path': 'video/Camera3 (00K84661627)/Group-A-Mouse-198.avi',
-                 'fps': 20.04,
-                 'num_frames': int(31261),
-                 'duration': 1559.930139720559}],
-        }, 
-        'Camera4 (00K84661630)': {
-            'total_duration': 11560.2589641434265,
-            'frames_info': [{'path': 'video/Camera4 (00K84661630)/Group-A-Mouse-198.avi',
-                 'fps': 20.08,
-                 'num_frames': int(31330),
-                 'duration': 1560.2589641434265}],
-        }, 
-        'Camera5 (00K84661637)': {
-            'total_duration': 1564.7474747474748,
-            'frames_info': [{'path': 'video/Camera5 (00K84661637)/Group-A-Mouse-198.avi',
-                 'fps': 8.91,
-                 'num_frames': int(14031),
-                 'duration': 1574.7474747474748}],
+        video_info[cname] = {
+            'total_duration': total_duration,
+            'frames_info': frames_info
         }
-    }
+        durations.append(total_duration)
+        print(f"{cname}: {total_duration:.2f} seconds, {frames_info} frames, ({len(vids)} file(s))")
+
     # Get maximum frame count from all videos (direct approach, no rounding errors)
     max_frames = 0
     for cname in camnames:
